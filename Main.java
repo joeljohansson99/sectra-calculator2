@@ -46,8 +46,8 @@ public class Main {
             if (commands[0].equals("print")) {
                 // Get and check register name
                 String reg = commands[1];
-                if (!reg.matches("[A-Za-z0-9]+")) {
-                    System.out.println("Invalid register name!");
+                if (!calculator.valid_reg(reg)) {
+                    System.out.println("Invalid register!");
                     continue;
                 }
 
@@ -55,30 +55,36 @@ public class Main {
                 System.out.println(calculator.get_value(reg));
 
             } else {
-                // Get and check register name
                 String reg = commands[0];
-                if (!reg.matches("[A-Za-z0-9]+")) {
-                    System.out.println("Invalid register name!");
-                    continue;
-                }
+                String op = commands[1];
+				String val = commands[2];
 
-                // Get and check value
-                int value;
-                try {
-                    value = Integer.parseInt(commands[2]);
-                } catch (Exception e) {
-                    System.out.println("Invalid value!");
-                    continue;
-                }
+                // Check register name
+				if (!calculator.valid_reg(reg)) {
+					System.out.println("Invalid register!");
+					continue;
+				}
 
-                // Get and check operand
-                Operand op = Operand.parse(commands[1], value);
-                if (op == null) {
+                // Check and parse operand
+                Operand operand = Operand.parse(op);
+                if (operand == null) {
                     System.out.println("Invalid Operation!");
+					continue;
                 }
+				
+				// Check value, either number or register, and create Expression object.
+				Expression exp;
+				if (calculator.valid_number(val)) {
+					exp = new Expression(operand, val, true);
+				} else if (calculator.valid_reg(val)) {
+					exp = new Expression(operand, val, false);
+				} else {
+					System.out.println("Invalid value!");
+					continue;
+				}
 
-                // Add operation for later evaluation
-                calculator.add_op(reg, op);
+                // Add expression for later evaluation
+                calculator.add_exp(reg, exp);
             }
 
         }

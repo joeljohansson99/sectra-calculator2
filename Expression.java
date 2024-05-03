@@ -1,24 +1,25 @@
 
-interface Expression {
-
-}
-
-class NumberExpression implements Expression {
+// Class for storing a pending operation, calling it Expression in order to not confuse it with operand. 
+class Expression {
     private Operand op;
-    private int value;
+    private String value;
+	private boolean number;
 
-    NumberExpression (Operand op, int value) {
+    Expression (Operand op, String value, boolean number) {
         this.op = op;
         this.value = value;
+		this.number = number;
     }
-}
 
-class RegisterExpression implements Expression {
-    private final Operand op;
-    private final String reg;
+	public String get_value() {
+		return this.value;
+	}
 
-    RegisterExpression (Operand op, String reg) {
-        this.op = op;
-        this.reg = reg;
-    }
+	public Operand get_op() {
+		return this.op;
+	}
+
+	public boolean is_number() {
+		return this.number;
+	}
 }

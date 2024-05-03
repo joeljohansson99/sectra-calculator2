@@ -2,6 +2,7 @@
 abstract class Operand {
 
     public static Operand parse(String op) {
+		// Match operation
         switch (op) {
             case "add":
                 return new Add();
@@ -17,6 +18,7 @@ abstract class Operand {
     abstract int do_op(int x, int y);
 }
 
+// Operations
 class Add extends Operand {
     @Override
     int do_op(int x, int y) {
